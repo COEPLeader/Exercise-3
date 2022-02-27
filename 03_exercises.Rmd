@@ -81,33 +81,61 @@ These exercises will reiterate what you learned in the "Expanding the data wrang
   1. Summarize the `garden_harvest` data to find the total harvest weight in pounds for each vegetable and day of week (HINT: use the `wday()` function from `lubridate`). Display the results so that the vegetables are rows but the days of the week are columns.
 
 ```{r}
-
+  garden_harvest %>% 
+    mutate(weekday = wday(date, label = TRUE)) %>% 
+    group_by(weekday, vegetable) %>% 
+    summarize(WD_total = sum(weight)*.0022) %>% 
+    pivot_wider(vegetable, names_from = weekday, values_from = WD_total, values_fill = 0)
 ```
 
   2. Summarize the `garden_harvest` data to find the total harvest in pound for each vegetable variety and then try adding the plot from the `garden_planting` table. This will not turn out perfectly. What is the problem? How might you fix it?
 
 ```{r}
-
+  garden_harvest %>% 
+    group_by(vegetable, variety) %>% 
+    summarize(total_weight = sum(weight*.0022)) %>% 
+    left_join(select(garden_planting, vegetable, variety, plot), by = c("vegetable","variety"))
 ```
+The data for total weight doesn't hold the information for plot, so we get redundant data for each different row displaying the new plot, which is a data acquisition problem, since the harvested plot wasn't recorded. We also have missing planting data, resulting in harvested data not having a corresponding plot for a
+The data is also a little messy, since we get a new row for each plot, so what I might do is pivot to a column of booleans for each plot to show where they were planted
+
+
 
   3. I would like to understand how much money I "saved" by gardening, for each vegetable type. Describe how I could use the `garden_harvest` and `garden_spending` datasets, along with data from somewhere like [this](https://products.wholefoodsmarket.com/search?sort=relevance&store=10542) to answer this question. You can answer this in words, referencing various join functions. You don't need R code but could provide some if it's helpful.
 
+If you were able to create a table of vegetables and price by pound, you could left_join the price table to the garden_harvest data, and then just multiply the total harvest for each vegetable with its price to get a good estimate of the money you saved.
+
   4. Subset the data to tomatoes. Reorder the tomato varieties from smallest to largest first harvest date. Create a barplot of total harvest in pounds for each variety, in the new order.CHALLENGE: add the date near the end of the bar. (This is probably not a super useful graph because it's difficult to read. This is more an exercise in using some of the functions you just learned.)
 
-```{r}
-
+```{r, fig.width = 10, fig.height = 5}
+  garden_harvest %>% 
+    filter(vegetable %in% "tomatoes") %>% 
+    group_by(variety) %>%
+    mutate(total_lbs = sum(weight*.0022))%>%
+    group_by(total_lbs,variety) %>% 
+    summarize(first_harvest = min(date)) %>% 
+    ggplot(aes(x = fct_reorder(variety, first_harvest), y = total_lbs)) +
+    geom_col() +
+    geom_text(aes(label = first_harvest), angle = 90, check_overlap = TRUE, hjust = -.2)
 ```
 
   5. In the `garden_harvest` data, create two new variables: one that makes the varieties lowercase and another that finds the length of the variety name. Arrange the data by vegetable and length of variety name (smallest to largest), with one row for each vegetable variety. HINT: use `str_to_lower()`, `str_length()`, and `distinct()`.
   
 ```{r}
-
+  garden_harvest %>% 
+    mutate(var_lwr = str_to_lower(variety), var_len = str_length(variety))  %>% 
+    select(-c(date, weight, units)) %>% 
+    distinct() %>% 
+    arrange(var_len)
 ```
 
   6. In the `garden_harvest` data, find all distinct vegetable varieties that have "er" or "ar" in their name. HINT: `str_detect()` with an "or" statement (use the | for "or") and `distinct()`.
 
 ```{r}
-
+  garden_harvest %>% 
+    filter(str_detect(variety, "er")|str_detect(variety, "ar")) %>% 
+    select(vegetable, variety) %>% 
+    distinct()
 ```
 
 
@@ -133,7 +161,7 @@ Here is the code to read in the data. We do this a little differently than usual
 
 ```{r cache=TRUE}
 data_site <- 
-  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data-Small.rds" 
+  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data.rds" 
 Trips <- readRDS(gzcon(url(data_site)))
 Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv")
 ```
@@ -147,65 +175,126 @@ It's natural to expect that bikes are rented more at some times of day, some day
   7. A density plot, which is a smoothed out histogram, of the events versus `sdate`. Use `geom_density()`.
   
 ```{r}
-
+  Trips %>% 
+    ggplot(aes(x=sdate)) +
+    geom_density()
 ```
   
   8. A density plot of the events versus time of day.  You can use `mutate()` with `lubridate`'s  `hour()` and `minute()` functions to extract the hour of the day and minute within the hour from `sdate`. Hint: A minute is 1/60 of an hour, so create a variable where 3:30 is 3.5 and 3:45 is 3.75.
   
 ```{r}
-
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density()
 ```
   
   9. A bar graph of the events versus day of the week. Put day on the y-axis.
   
 ```{r}
-
+  Trips %>% 
+    ggplot(aes(y = (wday(sdate, label = TRUE)))) +
+      geom_bar()
 ```
   
   10. Facet your graph from exercise 8. by day of the week. Is there a pattern?
   
 ```{r}
-
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density() +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
 ```
+
+We can clearly see where people were commuting in the two peaks in the morning and the afternoon of weekdays. For weekends there is obviously a more even distribution because people have freer schedules.
   
 The variable `client` describes whether the renter is a regular user (level `Registered`) or has not joined the bike-rental organization (`Causal`). The next set of exercises investigate whether these two different categories of users show different rental behavior and how `client` interacts with the patterns you found in the previous exercises. 
 
   11. Change the graph from exercise 10 to set the `fill` aesthetic for `geom_density()` to the `client` variable. You should also set `alpha = .5` for transparency and `color=NA` to suppress the outline of the density function.
   
 ```{r}
-
+Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
 ```
 
   12. Change the previous graph by adding the argument `position = position_stack()` to `geom_density()`. In your opinion, is this better or worse in terms of telling a story? What are the advantages/disadvantages of each?
   
 ```{r}
-
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA, position = position_stack()) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
 ```
+
+This is a lot worse. For one, the distribution is no longer normalized. When we separated into 2 density plots for registered and casual clients, each one was individually normalized for each client-base, so when we add them back up we get misrepresentation. Imagine if 90% of the trips were registered clients, and 10% were the casual clients. We would expect the stacked graphs to show the overall data for all trips, but if the 10% of casual clients all rode at one time, it would greatly skew the stacked graph, even if all the registered clients rode at some other time. It's the same reason the electoral college needs to go.
+We can fix the normalization issue relatively easily though, since R already has built in functionality
+
+```{r}
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday, after_stat(count))) +
+    geom_density(aes(fill = client), alpha = .5, color = NA, position = position_stack()) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
+```
+
+The problem now is that we have the total count instead of the distribution density, and I don't yet know how I can change the scale of counting by a factor of 1/n(). 
   
   13. In this graph, go back to using the regular density plot (without `position = position_stack()`). Add a new variable to the dataset called `weekend` which will be "weekend" if the day is Saturday or Sunday and  "weekday" otherwise (HINT: use the `ifelse()` function and the `wday()` function from `lubridate`). Then, update the graph from the previous problem by faceting on the new `weekend` variable. 
   
 ```{r}
-
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate), weekend = ifelse(wday(sdate) != c(1,7), "Weekday", "Weekend")) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA) +
+    facet_wrap(vars(weekend))
 ```
   
   14. Change the graph from the previous problem to facet on `client` and fill with `weekday`. What information does this graph tell you that the previous didn't? Is one graph better than the other?
   
 ```{r}
-
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = wday(sdate, label = TRUE)), alpha = .5, color = NA) +
+    facet_wrap(vars(client))
 ```
+
+It further confirms the suspicion that the registered users have "typical" 9-5 jobs, since we can see that their behavior picks up during the day on the weekends, which the causal riders' doesn't. Other than just this purpose this graph is not very effective, because the many different colors heavily obfuscates any single day's information past the first few colors in the foreground.
   
 ### Spatial patterns
 
   15. Use the latitude and longitude variables in `Stations` to make a visualization of the total number of departures from each station in the `Trips` data. Use either color or size to show the variation in number of departures. We will improve this plot next week when we learn about maps!
   
 ```{r}
-
+  usage_map <- left_join(Trips, select(Stations, name, lat, long),
+            by= c("sstation" = "name")) %>% 
+    group_by(sstation) %>% 
+    mutate(n = n()) 
+  usage_map %>% 
+    ggplot(aes(x = long, y = lat)) +
+      geom_point(aes(size = n, color = n))
+  
 ```
   
   16. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? (Again, we'll improve this next week when we learn about maps).
   
 ```{r}
-
+    usage_map <- left_join(Trips, select(Stations, name, lat, long),
+            by= c("sstation" = "name")) %>% 
+    group_by(sstation) %>% 
+    mutate(n = n()) %>% 
+    group_by(sstation) %>% 
+    mutate(casual_prop = sum(client == "Casual")/n()) %>% 
+    group_by(sstation, client) %>% 
+    mutate(casual_count = n())
+  usage_map %>% 
+    ggplot(aes(x = long, y = lat)) +
+      geom_point(aes(size = casual_count, color = casual_prop))
 ```
   
 **DID YOU REMEMBER TO GO BACK AND CHANGE THIS SET OF EXERCISES TO THE LARGER DATASET? IF NOT, DO THAT NOW.**
@@ -216,14 +305,56 @@ In this section, we'll use the data from 2022-02-01 Tidy Tuesday. If you didn't 
 
   17. The final product of this exercise will be a graph that has breed on the y-axis and the sum of the numeric ratings in the `breed_traits` dataset on the x-axis, with a dot for each rating. First, create a new dataset called `breed_traits_total` that has two variables -- `Breed` and `total_rating`. The `total_rating` variable is the sum of the numeric ratings in the `breed_traits` dataset (we'll use this dataset again in the next problem). Then, create the graph just described. Omit Breeds with a `total_rating` of 0 and order the Breeds from highest to lowest ranked. You may want to adjust the `fig.height` and `fig.width` arguments inside the code chunk options (eg. `{r, fig.height=8, fig.width=4}`) so you can see things more clearly - check this after you knit the file to assure it looks like what you expected.
 
-```{r}
+```{r, fig.height=8, fig.width=4}}
+  total_rating_tbl <- breed_traits %>%
+    group_by(Breed) %>% 
+    select(-c( "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed) %>% 
+    summarize(total_rating = sum(Score))
 
+  breed_traits_total <- breed_traits %>% 
+    group_by(Breed) %>% 
+    select(-c("Coat Type", "Coat Length")) %>% 
+    left_join(total_rating_tbl, by = "Breed") %>% 
+    filter(total_rating != 0) %>% 
+    arrange(desc(total_rating))
+
+  breed_traits_total %>% 
+    ggplot(aes(y = fct_reorder(Breed, total_rating), x = total_rating)) +
+    geom_point()
 ```
+When you said a dot for each rating, did you mean a dot for each total ie. one dot per breed? I'm just a little confused because while by my reading that's what you're asking, I would assume we wouldn't want to use points as much as bars for this type of plot.
 
   18. The final product of this exercise will be a graph with the top-20 dogs in total ratings (from previous problem) on the y-axis, year on the x-axis, and points colored by each breed's ranking for that year (from the `breed_rank_all` dataset). The points within each breed will be connected by a line, and the breeds should be arranged from the highest median rank to lowest median rank ("highest" is actually the smallest numer, eg. 1 = best). After you're finished, think of AT LEAST one thing you could you do to make this graph better. HINTS: 1. Start with the `breed_rank_all` dataset and pivot it so year is a variable. 2. Use the `separate()` function to get year alone, and there's an extra argument in that function that can make it numeric. 3. For both datasets used, you'll need to `str_squish()` Breed before joining. 
   
 ```{r}
+  total_rating_tbl <- breed_traits %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    group_by(Breed_rect) %>% 
+    select(-c("Breed", "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed_rect,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed_rect) %>% 
+    summarize(total_rating = sum(Score)) %>%
+    slice_max(total_rating, n = 20) 
 
+  breed_rank_all %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    select(-c("Breed", "links", "Image")) %>% 
+    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year", values_to = "rank") %>% 
+    right_join(total_rating_tbl, by = "Breed_rect") %>%
+    group_by(Breed_rect) %>% 
+    mutate(med_rank = median(rank)) %>% 
+    arrange(med_rank) %>% 
+  ggplot(aes(y = fct_reorder(Breed_rect, med_rank, .desc = TRUE), x = year)) +
+    geom_point(aes(color = rank)) +
+    geom_line(aes(y = Breed_rect))
+```
+
+This graph has the order messed up because of the NA values for the Miniature American Shepherd. I think another way to make this graph more useful would be to 
+
+```{r}
+  view(left_join(breed_traits, breed_rank_all, by = str_squish(Breed)))
 ```
   
   19. Create your own! Requirements: use a `join` or `pivot` function (or both, if you'd like), a `str_XXX()` function, and a `fct_XXX()` function to create a graph using any of the dog datasets. One suggestion is to try to improve the graph you created for the Tidy Tuesday assignment. If you want an extra challenge, find a way to use the dog images in the `breed_rank_all` file - check out the `ggimage` library and [this resource](https://wilkelab.org/ggtext/) for putting images as labels.
@@ -241,6 +372,8 @@ In this section, we'll use the data from 2022-02-01 Tidy Tuesday. If you didn't 
 This problem uses the data from the Tidy Tuesday competition this week, `kids`. If you need to refresh your memory on the data, read about it [here](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-15/readme.md). 
 
   21. In this exercise, you are going to try to replicate the graph below, created by Georgios Karamanis. I'm sure you can find the exact code on GitHub somewhere, but **DON'T DO THAT!** You will only be graded for putting an effort into this problem. So, give it a try and see how far you can get without doing too much googling. HINT: use `facet_geo()`. The graphic won't load below since it came from a location on my computer. So, you'll have to reference the original html on the moodle page to see it.
-  
+```{r}
+#![](kids_data_karamanis.jpeg)
+```
 
 **DID YOU REMEMBER TO UNCOMMENT THE OPTIONS AT THE TOP?**

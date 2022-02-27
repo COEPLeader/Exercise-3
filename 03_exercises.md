@@ -74,10 +74,16 @@ breed_traits <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 
 ```
 ## Rows: 195 Columns: 17
+```
+
+```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr  (3): Breed, Coat Type, Coat Length
 ## dbl (14): Affectionate With Family, Good With Young Children, Good With Othe...
+```
+
+```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -89,9 +95,15 @@ trait_description <- readr::read_csv('https://raw.githubusercontent.com/rfordata
 
 ```
 ## Rows: 16 Columns: 4
+```
+
+```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr (4): Trait, Trait_1, Trait_5, Description
+```
+
+```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -103,10 +115,16 @@ breed_rank_all <- readr::read_csv('https://raw.githubusercontent.com/rfordatasci
 
 ```
 ## Rows: 195 Columns: 11
+```
+
+```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr (3): Breed, links, Image
 ## dbl (8): 2013 Rank, 2014 Rank, 2015 Rank, 2016 Rank, 2017 Rank, 2018 Rank, 2...
+```
+
+```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -119,10 +137,16 @@ kids <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidyt
 
 ```
 ## Rows: 23460 Columns: 6
+```
+
+```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr (2): state, variable
 ## dbl (4): year, raw, inf_adj, inf_adj_perchild
+```
+
+```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -168,20 +192,19 @@ These exercises will reiterate what you learned in the "Expanding the data wrang
 
 ```r
   garden_harvest %>% 
-    mutate(weekday = wday(date)) %>% 
+    mutate(weekday = wday(date, label = TRUE)) %>% 
     group_by(weekday, vegetable) %>% 
     summarize(WD_total = sum(weight)*.0022) %>% 
-    pivot_wider(vegetable, names_from = weekday, values_from = WD_total)
+    pivot_wider(vegetable, names_from = weekday, values_from = WD_total, values_fill = 0)
 ```
 
 ```
-## `summarise()` has grouped output by 'weekday'. You can override using the
-## `.groups` argument.
+## `summarise()` has grouped output by 'weekday'. You can override using the `.groups` argument.
 ```
 
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["3"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["4"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["5"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["6"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["7"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"beans","2":"1.9096","3":"6.4944","4":"4.3780","5":"4.0744","6":"3.3858","7":"1.5224","8":"4.6992"},{"1":"beets","2":"0.3212","3":"0.6710","4":"0.1584","5":"0.1826","6":"11.8668","7":"0.0242","8":"0.3784"},{"1":"broccoli","2":"1.2562","3":"0.8184","4":"NA","5":"0.7062","6":"NA","7":"0.1650","8":"NA"},{"1":"carrots","2":"2.9304","3":"0.8690","4":"0.3520","5":"5.5506","6":"2.6686","7":"2.1340","8":"2.3254"},{"1":"corn","2":"1.4542","3":"0.7568","4":"0.7260","5":"5.2910","6":"NA","7":"3.4408","8":"1.3134"},{"1":"cucumbers","2":"3.0976","3":"4.7652","4":"10.0254","5":"5.2954","6":"3.3000","7":"7.4140","8":"9.6206"},{"1":"jalapeño","2":"0.2618","3":"5.5418","4":"0.5478","5":"0.4796","6":"0.2244","7":"1.2914","8":"1.5048"},{"1":"kale","2":"0.8250","3":"2.0636","4":"0.2816","5":"0.6160","6":"0.2794","7":"0.3806","8":"1.4872"},{"1":"lettuce","2":"1.4630","3":"2.4530","4":"0.9152","5":"1.1836","6":"2.4464","7":"1.7974","8":"1.3134"},{"1":"onions","2":"0.2596","3":"0.5082","4":"0.7062","5":"NA","6":"0.6006","7":"0.0726","8":"1.9096"},{"1":"peas","2":"2.0526","3":"4.6244","4":"2.0636","5":"1.0780","6":"3.3902","7":"0.9350","8":"2.8468"},{"1":"peppers","2":"0.5016","3":"2.5212","4":"1.4410","5":"2.4376","6":"0.7084","7":"0.3344","8":"1.3794"},{"1":"radish","2":"0.0814","3":"0.1958","4":"0.0946","5":"NA","6":"0.1474","7":"0.1936","8":"0.2310"},{"1":"rutabaga","2":"19.2236","3":"NA","4":"NA","5":"NA","6":"NA","7":"3.5706","8":"6.8838"},{"1":"spinach","2":"0.4862","3":"0.1474","4":"0.4950","5":"0.2134","6":"0.2332","7":"0.1958","8":"0.2596"},{"1":"strawberries","2":"0.0814","3":"0.4774","4":"NA","5":"NA","6":"0.0880","7":"0.4862","8":"0.1694"},{"1":"Swiss chard","2":"1.2452","3":"1.0714","4":"0.0704","5":"0.9064","6":"2.2264","7":"0.6160","8":"0.7326"},{"1":"tomatoes","2":"75.4512","3":"11.4686","4":"48.6486","5":"58.1438","6":"34.4454","7":"84.8980","8":"35.0526"},{"1":"zucchini","2":"12.2100","3":"12.1704","4":"16.4340","5":"2.0372","6":"34.5576","7":"18.6824","8":"3.4078"},{"1":"basil","2":"NA","3":"0.0660","4":"0.1100","5":"NA","6":"0.0264","7":"0.4664","8":"0.4092"},{"1":"hot peppers","2":"NA","3":"1.2562","4":"0.1408","5":"0.0682","6":"NA","7":"NA","8":"NA"},{"1":"potatoes","2":"NA","3":"0.9680","4":"NA","5":"4.5606","6":"11.8272","7":"3.7334","8":"2.7962"},{"1":"pumpkins","2":"NA","3":"30.0564","4":"31.7900","5":"NA","6":"NA","7":"NA","8":"92.4946"},{"1":"raspberries","2":"NA","3":"0.1298","4":"0.3344","5":"NA","6":"0.2882","7":"0.5698","8":"0.5324"},{"1":"squash","2":"NA","3":"24.2836","4":"18.4294","5":"NA","6":"NA","7":"NA","8":"56.1044"},{"1":"cilantro","2":"NA","3":"NA","4":"0.0044","5":"NA","6":"NA","7":"0.0726","8":"0.0374"},{"1":"edamame","2":"NA","3":"NA","4":"1.3992","5":"NA","6":"NA","7":"NA","8":"4.6794"},{"1":"chives","2":"NA","3":"NA","4":"NA","5":"0.0176","6":"NA","7":"NA","8":"NA"},{"1":"kohlrabi","2":"NA","3":"NA","4":"NA","5":"NA","6":"0.4202","7":"NA","8":"NA"},{"1":"apple","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"0.3432"},{"1":"asparagus","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"0.0440"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Sun"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Mon"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Tue"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Wed"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Thu"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Fri"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Sat"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"beans","2":"1.9096","3":"6.4944","4":"4.3780","5":"4.0744","6":"3.3858","7":"1.5224","8":"4.6992"},{"1":"beets","2":"0.3212","3":"0.6710","4":"0.1584","5":"0.1826","6":"11.8668","7":"0.0242","8":"0.3784"},{"1":"broccoli","2":"1.2562","3":"0.8184","4":"0.0000","5":"0.7062","6":"0.0000","7":"0.1650","8":"0.0000"},{"1":"carrots","2":"2.9304","3":"0.8690","4":"0.3520","5":"5.5506","6":"2.6686","7":"2.1340","8":"2.3254"},{"1":"corn","2":"1.4542","3":"0.7568","4":"0.7260","5":"5.2910","6":"0.0000","7":"3.4408","8":"1.3134"},{"1":"cucumbers","2":"3.0976","3":"4.7652","4":"10.0254","5":"5.2954","6":"3.3000","7":"7.4140","8":"9.6206"},{"1":"jalapeño","2":"0.2618","3":"5.5418","4":"0.5478","5":"0.4796","6":"0.2244","7":"1.2914","8":"1.5048"},{"1":"kale","2":"0.8250","3":"2.0636","4":"0.2816","5":"0.6160","6":"0.2794","7":"0.3806","8":"1.4872"},{"1":"lettuce","2":"1.4630","3":"2.4530","4":"0.9152","5":"1.1836","6":"2.4464","7":"1.7974","8":"1.3134"},{"1":"onions","2":"0.2596","3":"0.5082","4":"0.7062","5":"0.0000","6":"0.6006","7":"0.0726","8":"1.9096"},{"1":"peas","2":"2.0526","3":"4.6244","4":"2.0636","5":"1.0780","6":"3.3902","7":"0.9350","8":"2.8468"},{"1":"peppers","2":"0.5016","3":"2.5212","4":"1.4410","5":"2.4376","6":"0.7084","7":"0.3344","8":"1.3794"},{"1":"radish","2":"0.0814","3":"0.1958","4":"0.0946","5":"0.0000","6":"0.1474","7":"0.1936","8":"0.2310"},{"1":"rutabaga","2":"19.2236","3":"0.0000","4":"0.0000","5":"0.0000","6":"0.0000","7":"3.5706","8":"6.8838"},{"1":"spinach","2":"0.4862","3":"0.1474","4":"0.4950","5":"0.2134","6":"0.2332","7":"0.1958","8":"0.2596"},{"1":"strawberries","2":"0.0814","3":"0.4774","4":"0.0000","5":"0.0000","6":"0.0880","7":"0.4862","8":"0.1694"},{"1":"Swiss chard","2":"1.2452","3":"1.0714","4":"0.0704","5":"0.9064","6":"2.2264","7":"0.6160","8":"0.7326"},{"1":"tomatoes","2":"75.4512","3":"11.4686","4":"48.6486","5":"58.1438","6":"34.4454","7":"84.8980","8":"35.0526"},{"1":"zucchini","2":"12.2100","3":"12.1704","4":"16.4340","5":"2.0372","6":"34.5576","7":"18.6824","8":"3.4078"},{"1":"basil","2":"0.0000","3":"0.0660","4":"0.1100","5":"0.0000","6":"0.0264","7":"0.4664","8":"0.4092"},{"1":"hot peppers","2":"0.0000","3":"1.2562","4":"0.1408","5":"0.0682","6":"0.0000","7":"0.0000","8":"0.0000"},{"1":"potatoes","2":"0.0000","3":"0.9680","4":"0.0000","5":"4.5606","6":"11.8272","7":"3.7334","8":"2.7962"},{"1":"pumpkins","2":"0.0000","3":"30.0564","4":"31.7900","5":"0.0000","6":"0.0000","7":"0.0000","8":"92.4946"},{"1":"raspberries","2":"0.0000","3":"0.1298","4":"0.3344","5":"0.0000","6":"0.2882","7":"0.5698","8":"0.5324"},{"1":"squash","2":"0.0000","3":"24.2836","4":"18.4294","5":"0.0000","6":"0.0000","7":"0.0000","8":"56.1044"},{"1":"cilantro","2":"0.0000","3":"0.0000","4":"0.0044","5":"0.0000","6":"0.0000","7":"0.0726","8":"0.0374"},{"1":"edamame","2":"0.0000","3":"0.0000","4":"1.3992","5":"0.0000","6":"0.0000","7":"0.0000","8":"4.6794"},{"1":"chives","2":"0.0000","3":"0.0000","4":"0.0000","5":"0.0176","6":"0.0000","7":"0.0000","8":"0.0000"},{"1":"kohlrabi","2":"0.0000","3":"0.0000","4":"0.0000","5":"0.0000","6":"0.4202","7":"0.0000","8":"0.0000"},{"1":"apple","2":"0.0000","3":"0.0000","4":"0.0000","5":"0.0000","6":"0.0000","7":"0.0000","8":"0.3432"},{"1":"asparagus","2":"0.0000","3":"0.0000","4":"0.0000","5":"0.0000","6":"0.0000","7":"0.0000","8":"0.0440"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 
@@ -190,43 +213,24 @@ These exercises will reiterate what you learned in the "Expanding the data wrang
 
 ```r
   garden_harvest %>% 
-    group_by(vegetable) %>% 
-    summarize(total = sum(weight*.0022)) %>% 
-    left_join(select(garden_planting, vegetable, plot), by = "vegetable") 
+    group_by(vegetable, variety) %>% 
+    summarize(total_weight = sum(weight*.0022)) %>% 
+    left_join(select(garden_planting, vegetable, variety, plot), by = c("vegetable","variety"))
+```
+
+```
+## `summarise()` has grouped output by 'vegetable'. You can override using the `.groups` argument.
 ```
 
 <div data-pagedtable="false">
   <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["plot"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"apple","2":"0.3432","3":"NA"},{"1":"asparagus","2":"0.0440","3":"NA"},{"1":"basil","2":"1.0780","3":"potB"},{"1":"beans","2":"26.4638","3":"M"},{"1":"beans","2":"26.4638","3":"D"},{"1":"beans","2":"26.4638","3":"K"},{"1":"beans","2":"26.4638","3":"L"},{"1":"beans","2":"26.4638","3":"E"},{"1":"beets","2":"13.6026","3":"H"},{"1":"beets","2":"13.6026","3":"H"},{"1":"broccoli","2":"2.9458","3":"P"},{"1":"broccoli","2":"2.9458","3":"D"},{"1":"broccoli","2":"2.9458","3":"I"},{"1":"carrots","2":"16.8300","3":"H"},{"1":"carrots","2":"16.8300","3":"H"},{"1":"carrots","2":"16.8300","3":"H"},{"1":"carrots","2":"16.8300","3":"L"},{"1":"carrots","2":"16.8300","3":"L"},{"1":"carrots","2":"16.8300","3":"L"},{"1":"chives","2":"0.0176","3":"NA"},{"1":"cilantro","2":"0.1144","3":"potD"},{"1":"cilantro","2":"0.1144","3":"E"},{"1":"corn","2":"12.9822","3":"A"},{"1":"corn","2":"12.9822","3":"B"},{"1":"cucumbers","2":"43.5182","3":"L"},{"1":"edamame","2":"6.0786","3":"O"},{"1":"hot peppers","2":"1.4652","3":"potB"},{"1":"hot peppers","2":"1.4652","3":"potC"},{"1":"jalapeño","2":"9.8516","3":"L"},{"1":"kale","2":"5.9334","3":"P"},{"1":"kale","2":"5.9334","3":"front"},{"1":"kohlrabi","2":"0.4202","3":"front"},{"1":"lettuce","2":"11.5720","3":"C"},{"1":"lettuce","2":"11.5720","3":"P"},{"1":"lettuce","2":"11.5720","3":"L"},{"1":"lettuce","2":"11.5720","3":"G"},{"1":"onions","2":"4.0568","3":"H"},{"1":"onions","2":"4.0568","3":"P"},{"1":"peas","2":"16.9906","3":"A"},{"1":"peas","2":"16.9906","3":"B"},{"1":"peppers","2":"9.3236","3":"K"},{"1":"peppers","2":"9.3236","3":"O"},{"1":"peppers","2":"9.3236","3":"potA"},{"1":"peppers","2":"9.3236","3":"potA"},{"1":"peppers","2":"9.3236","3":"potD"},{"1":"potatoes","2":"23.8854","3":"D"},{"1":"potatoes","2":"23.8854","3":"D"},{"1":"potatoes","2":"23.8854","3":"I"},{"1":"potatoes","2":"23.8854","3":"I"},{"1":"potatoes","2":"23.8854","3":"I"},{"1":"pumpkins","2":"154.3410","3":"A"},{"1":"pumpkins","2":"154.3410","3":"B"},{"1":"pumpkins","2":"154.3410","3":"B"},{"1":"pumpkins","2":"154.3410","3":"side"},{"1":"pumpkins","2":"154.3410","3":"side"},{"1":"pumpkins","2":"154.3410","3":"K"},{"1":"radish","2":"0.9438","3":"C"},{"1":"radish","2":"0.9438","3":"G"},{"1":"radish","2":"0.9438","3":"H"},{"1":"raspberries","2":"1.8546","3":"NA"},{"1":"rutabaga","2":"29.6780","3":"NA"},{"1":"spinach","2":"2.0306","3":"H"},{"1":"spinach","2":"2.0306","3":"E"},{"1":"squash","2":"98.8174","3":"A"},{"1":"squash","2":"98.8174","3":"A"},{"1":"squash","2":"98.8174","3":"A"},{"1":"squash","2":"98.8174","3":"A"},{"1":"squash","2":"98.8174","3":"B"},{"1":"squash","2":"98.8174","3":"B"},{"1":"squash","2":"98.8174","3":"K"},{"1":"squash","2":"98.8174","3":"K"},{"1":"squash","2":"98.8174","3":"side"},{"1":"strawberries","2":"1.3024","3":"F"},{"1":"Swiss chard","2":"6.8684","3":"M"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"O"},{"1":"tomatoes","2":"348.1082","3":"N"},{"1":"tomatoes","2":"348.1082","3":"J"},{"1":"tomatoes","2":"348.1082","3":"front"},{"1":"tomatoes","2":"348.1082","3":"O"},{"1":"zucchini","2":"99.4994","3":"D"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["variety"],"name":[2],"type":["chr"],"align":["left"]},{"label":["total_weight"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["plot"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"apple","2":"unknown","3":"0.3432","4":"NA"},{"1":"asparagus","2":"asparagus","3":"0.0440","4":"NA"},{"1":"basil","2":"Isle of Naxos","3":"1.0780","4":"potB"},{"1":"beans","2":"Bush Bush Slender","3":"22.0836","4":"M"},{"1":"beans","2":"Bush Bush Slender","3":"22.0836","4":"D"},{"1":"beans","2":"Chinese Red Noodle","3":"0.7832","4":"K"},{"1":"beans","2":"Chinese Red Noodle","3":"0.7832","4":"L"},{"1":"beans","2":"Classic Slenderette","3":"3.5970","4":"E"},{"1":"beets","2":"Gourmet Golden","3":"7.0070","4":"H"},{"1":"beets","2":"leaves","3":"0.2222","4":"NA"},{"1":"beets","2":"Sweet Merlin","3":"6.3734","4":"H"},{"1":"broccoli","2":"Main Crop Bravado","3":"2.1274","4":"D"},{"1":"broccoli","2":"Main Crop Bravado","3":"2.1274","4":"I"},{"1":"broccoli","2":"Yod Fah","3":"0.8184","4":"P"},{"1":"carrots","2":"Bolero","3":"8.2742","4":"H"},{"1":"carrots","2":"Bolero","3":"8.2742","4":"L"},{"1":"carrots","2":"Dragon","3":"4.0964","4":"H"},{"1":"carrots","2":"Dragon","3":"4.0964","4":"L"},{"1":"carrots","2":"greens","3":"0.3718","4":"NA"},{"1":"carrots","2":"King Midas","3":"4.0876","4":"H"},{"1":"carrots","2":"King Midas","3":"4.0876","4":"L"},{"1":"chives","2":"perrenial","3":"0.0176","4":"NA"},{"1":"cilantro","2":"cilantro","3":"0.1144","4":"potD"},{"1":"cilantro","2":"cilantro","3":"0.1144","4":"E"},{"1":"corn","2":"Dorinny Sweet","3":"11.3828","4":"A"},{"1":"corn","2":"Golden Bantam","3":"1.5994","4":"B"},{"1":"cucumbers","2":"pickling","3":"43.5182","4":"L"},{"1":"edamame","2":"edamame","3":"6.0786","4":"O"},{"1":"hot peppers","2":"thai","3":"0.1474","4":"potB"},{"1":"hot peppers","2":"variety","3":"1.3178","4":"potC"},{"1":"jalapeño","2":"giant","3":"9.8516","4":"L"},{"1":"kale","2":"Heirloom Lacinto","3":"5.9334","4":"P"},{"1":"kale","2":"Heirloom Lacinto","3":"5.9334","4":"front"},{"1":"kohlrabi","2":"Crispy Colors Duo","3":"0.4202","4":"front"},{"1":"lettuce","2":"Farmer's Market Blend","3":"3.7950","4":"C"},{"1":"lettuce","2":"Farmer's Market Blend","3":"3.7950","4":"L"},{"1":"lettuce","2":"Lettuce Mixture","3":"4.7388","4":"G"},{"1":"lettuce","2":"mustard greens","3":"0.0506","4":"NA"},{"1":"lettuce","2":"reseed","3":"0.0990","4":"NA"},{"1":"lettuce","2":"Tatsoi","3":"2.8886","4":"P"},{"1":"onions","2":"Delicious Duo","3":"0.7524","4":"P"},{"1":"onions","2":"Long Keeping Rainbow","3":"3.3044","4":"H"},{"1":"peas","2":"Magnolia Blossom","3":"7.4426","4":"B"},{"1":"peas","2":"Super Sugar Snap","3":"9.5480","4":"A"},{"1":"peppers","2":"green","3":"5.6804","4":"K"},{"1":"peppers","2":"green","3":"5.6804","4":"O"},{"1":"peppers","2":"variety","3":"3.6432","4":"potA"},{"1":"peppers","2":"variety","3":"3.6432","4":"potA"},{"1":"peppers","2":"variety","3":"3.6432","4":"potD"},{"1":"potatoes","2":"purple","3":"3.0030","4":"D"},{"1":"potatoes","2":"red","3":"4.4242","4":"I"},{"1":"potatoes","2":"Russet","3":"9.0728","4":"D"},{"1":"potatoes","2":"yellow","3":"7.3854","4":"I"},{"1":"potatoes","2":"yellow","3":"7.3854","4":"I"},{"1":"pumpkins","2":"Cinderella's Carraige","3":"32.8042","4":"B"},{"1":"pumpkins","2":"New England Sugar","3":"44.7656","4":"K"},{"1":"pumpkins","2":"saved","3":"76.7712","4":"B"},{"1":"radish","2":"Garden Party Mix","3":"0.9438","4":"C"},{"1":"radish","2":"Garden Party Mix","3":"0.9438","4":"G"},{"1":"radish","2":"Garden Party Mix","3":"0.9438","4":"H"},{"1":"raspberries","2":"perrenial","3":"1.8546","4":"NA"},{"1":"rutabaga","2":"Improved Helenor","3":"29.6780","4":"NA"},{"1":"spinach","2":"Catalina","3":"2.0306","4":"H"},{"1":"spinach","2":"Catalina","3":"2.0306","4":"E"},{"1":"squash","2":"Blue (saved)","3":"41.4370","4":"A"},{"1":"squash","2":"Blue (saved)","3":"41.4370","4":"B"},{"1":"squash","2":"delicata","3":"10.4764","4":"K"},{"1":"squash","2":"Red Kuri","3":"22.6842","4":"A"},{"1":"squash","2":"Red Kuri","3":"22.6842","4":"B"},{"1":"squash","2":"Red Kuri","3":"22.6842","4":"side"},{"1":"squash","2":"Waltham Butternut","3":"24.2198","4":"A"},{"1":"squash","2":"Waltham Butternut","3":"24.2198","4":"K"},{"1":"strawberries","2":"perrenial","3":"1.3024","4":"NA"},{"1":"Swiss chard","2":"Neon Glow","3":"6.8684","4":"M"},{"1":"tomatoes","2":"Amish Paste","3":"65.5358","4":"J"},{"1":"tomatoes","2":"Amish Paste","3":"65.5358","4":"N"},{"1":"tomatoes","2":"Better Boy","3":"33.9372","4":"J"},{"1":"tomatoes","2":"Better Boy","3":"33.9372","4":"N"},{"1":"tomatoes","2":"Big Beef","3":"24.9414","4":"N"},{"1":"tomatoes","2":"Black Krim","3":"15.7740","4":"N"},{"1":"tomatoes","2":"Bonny Best","3":"24.8710","4":"J"},{"1":"tomatoes","2":"Brandywine","3":"15.6134","4":"J"},{"1":"tomatoes","2":"Cherokee Purple","3":"15.6794","4":"J"},{"1":"tomatoes","2":"grape","3":"32.3268","4":"O"},{"1":"tomatoes","2":"Jet Star","3":"14.9930","4":"N"},{"1":"tomatoes","2":"Mortgage Lifter","3":"26.2702","4":"J"},{"1":"tomatoes","2":"Mortgage Lifter","3":"26.2702","4":"N"},{"1":"tomatoes","2":"Old German","3":"26.6618","4":"J"},{"1":"tomatoes","2":"volunteers","3":"51.5042","4":"N"},{"1":"tomatoes","2":"volunteers","3":"51.5042","4":"J"},{"1":"tomatoes","2":"volunteers","3":"51.5042","4":"front"},{"1":"tomatoes","2":"volunteers","3":"51.5042","4":"O"},{"1":"zucchini","2":"Romanesco","3":"99.4994","4":"D"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-It duplicated the vegetable rows to display each plot it's planted in. I think I would try to pivot the table to have a column for each plot, and a boolean for whether it was planted there or not.
+The data for total weight doesn't hold the information for plot, so we get redundant data for each different row displaying the new plot, which is a data acquisition problem, since the harvested plot wasn't recorded. We also have missing planting data, resulting in harvested data not having a corresponding plot for a
+The data is also a little messy, since we get a new row for each plot, so what I might do is pivot to a column of booleans for each plot to show where they were planted
 
-I tried writing out
 
-```r
-  garden_harvest %>% 
-    group_by(vegetable) %>% 
-    summarize(total = sum(weight*.0022)) %>% 
-    left_join(select(garden_planting, vegetable, plot), by = "vegetable") %>% 
-    group_by(plot) %>%
-    mutate(n = n()) %>% 
-    pivot_wider(vegetable:total, names_from = plot, values_from = n)
-```
-
-```
-## Warning: Values are not uniquely identified; output will contain list-cols.
-## * Use `values_fn = list` to suppress this warning.
-## * Use `values_fn = length` to identify where the duplicates arise
-## * Use `values_fn = {summary_fun}` to summarise duplicates
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["vegetable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["total"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["NA"],"name":[3],"type":["list"],"align":["right"]},{"label":["potB"],"name":[4],"type":["list"],"align":["right"]},{"label":["M"],"name":[5],"type":["list"],"align":["right"]},{"label":["D"],"name":[6],"type":["list"],"align":["right"]},{"label":["K"],"name":[7],"type":["list"],"align":["right"]},{"label":["L"],"name":[8],"type":["list"],"align":["right"]},{"label":["E"],"name":[9],"type":["list"],"align":["right"]},{"label":["H"],"name":[10],"type":["list"],"align":["right"]},{"label":["P"],"name":[11],"type":["list"],"align":["right"]},{"label":["I"],"name":[12],"type":["list"],"align":["right"]},{"label":["potD"],"name":[13],"type":["list"],"align":["right"]},{"label":["A"],"name":[14],"type":["list"],"align":["right"]},{"label":["B"],"name":[15],"type":["list"],"align":["right"]},{"label":["O"],"name":[16],"type":["list"],"align":["right"]},{"label":["potC"],"name":[17],"type":["list"],"align":["right"]},{"label":["front"],"name":[18],"type":["list"],"align":["right"]},{"label":["C"],"name":[19],"type":["list"],"align":["right"]},{"label":["G"],"name":[20],"type":["list"],"align":["right"]},{"label":["potA"],"name":[21],"type":["list"],"align":["right"]},{"label":["side"],"name":[22],"type":["list"],"align":["right"]},{"label":["F"],"name":[23],"type":["list"],"align":["right"]},{"label":["J"],"name":[24],"type":["list"],"align":["right"]},{"label":["N"],"name":[25],"type":["list"],"align":["right"]}],"data":[{"1":"apple","2":"0.3432","3":"<int [1]>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"asparagus","2":"0.0440","3":"<int [1]>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"basil","2":"1.0780","3":"<NULL>","4":"<int [1]>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"beans","2":"26.4638","3":"<NULL>","4":"<NULL>","5":"<int [1]>","6":"<int [1]>","7":"<int [1]>","8":"<int [1]>","9":"<int [1]>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"beets","2":"13.6026","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<int [2]>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"broccoli","2":"2.9458","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<int [1]>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<int [1]>","12":"<int [1]>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"carrots","2":"16.8300","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<int [3]>","9":"<NULL>","10":"<int [3]>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"chives","2":"0.0176","3":"<int [1]>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"cilantro","2":"0.1144","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<int [1]>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<int [1]>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"corn","2":"12.9822","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<int [1]>","15":"<int [1]>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"cucumbers","2":"43.5182","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<int [1]>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"edamame","2":"6.0786","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<int [1]>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"hot peppers","2":"1.4652","3":"<NULL>","4":"<int [1]>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<int [1]>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"jalapeño","2":"9.8516","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<int [1]>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"kale","2":"5.9334","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<int [1]>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<int [1]>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"kohlrabi","2":"0.4202","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<int [1]>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"lettuce","2":"11.5720","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<int [1]>","9":"<NULL>","10":"<NULL>","11":"<int [1]>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<int [1]>","20":"<int [1]>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"onions","2":"4.0568","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<int [1]>","11":"<int [1]>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"peas","2":"16.9906","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<int [1]>","15":"<int [1]>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"peppers","2":"9.3236","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<int [1]>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<int [1]>","14":"<NULL>","15":"<NULL>","16":"<int [1]>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<int [2]>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"potatoes","2":"23.8854","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<int [2]>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<int [3]>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"pumpkins","2":"154.3410","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<int [1]>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<int [1]>","15":"<int [2]>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<int [2]>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"radish","2":"0.9438","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<int [1]>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<int [1]>","20":"<int [1]>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"raspberries","2":"1.8546","3":"<int [1]>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"rutabaga","2":"29.6780","3":"<int [1]>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"spinach","2":"2.0306","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<int [1]>","10":"<int [1]>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"squash","2":"98.8174","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<int [2]>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<int [4]>","15":"<int [2]>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<int [1]>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"strawberries","2":"1.3024","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<int [1]>","24":"<NULL>","25":"<NULL>"},{"1":"Swiss chard","2":"6.8684","3":"<NULL>","4":"<NULL>","5":"<int [1]>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"},{"1":"tomatoes","2":"348.1082","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<NULL>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<int [2]>","17":"<NULL>","18":"<int [1]>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<int [8]>","25":"<int [7]>"},{"1":"zucchini","2":"99.4994","3":"<NULL>","4":"<NULL>","5":"<NULL>","6":"<int [1]>","7":"<NULL>","8":"<NULL>","9":"<NULL>","10":"<NULL>","11":"<NULL>","12":"<NULL>","13":"<NULL>","14":"<NULL>","15":"<NULL>","16":"<NULL>","17":"<NULL>","18":"<NULL>","19":"<NULL>","20":"<NULL>","21":"<NULL>","22":"<NULL>","23":"<NULL>","24":"<NULL>","25":"<NULL>"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
-which seems to be a start, but the data types are completely messed up, and I'm not sure how I would fix it.
 
   3. I would like to understand how much money I "saved" by gardening, for each vegetable type. Describe how I could use the `garden_harvest` and `garden_spending` datasets, along with data from somewhere like [this](https://products.wholefoodsmarket.com/search?sort=relevance&store=10542) to answer this question. You can answer this in words, referencing various join functions. You don't need R code but could provide some if it's helpful.
 
@@ -248,11 +252,10 @@ If you were able to create a table of vegetables and price by pound, you could l
 ```
 
 ```
-## `summarise()` has grouped output by 'total_lbs'. You can override using the
-## `.groups` argument.
+## `summarise()` has grouped output by 'total_lbs'. You can override using the `.groups` argument.
 ```
 
-![](03_exercises_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](03_exercises_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
   5. In the `garden_harvest` data, create two new variables: one that makes the varieties lowercase and another that finds the length of the variety name. Arrange the data by vegetable and length of variety name (smallest to largest), with one row for each vegetable variety. HINT: use `str_to_lower()`, `str_length()`, and `distinct()`.
   
@@ -278,7 +281,7 @@ If you were able to create a table of vegetables and price by pound, you could l
   garden_harvest %>% 
     filter(str_detect(variety, "er")|str_detect(variety, "ar")) %>% 
     select(vegetable, variety) %>% 
-    distinct
+    distinct()
 ```
 
 <div data-pagedtable="false">
@@ -311,17 +314,23 @@ Here is the code to read in the data. We do this a little differently than usual
 
 ```r
 data_site <- 
-  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data-Small.rds" 
+  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data.rds" 
 Trips <- readRDS(gzcon(url(data_site)))
 Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv")
 ```
 
 ```
 ## Rows: 347 Columns: 5
+```
+
+```
 ## -- Column specification --------------------------------------------------------
 ## Delimiter: ","
 ## chr (1): name
 ## dbl (4): lat, long, nbBikes, nbEmptyDocks
+```
+
+```
 ## 
 ## i Use `spec()` to retrieve the full column specification for this data.
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
@@ -336,46 +345,172 @@ It's natural to expect that bikes are rented more at some times of day, some day
   7. A density plot, which is a smoothed out histogram, of the events versus `sdate`. Use `geom_density()`.
   
 
+```r
+  Trips %>% 
+    ggplot(aes(x=sdate)) +
+    geom_density()
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
   
   8. A density plot of the events versus time of day.  You can use `mutate()` with `lubridate`'s  `hour()` and `minute()` functions to extract the hour of the day and minute within the hour from `sdate`. Hint: A minute is 1/60 of an hour, so create a variable where 3:30 is 3.5 and 3:45 is 3.75.
   
 
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density()
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
   
   9. A bar graph of the events versus day of the week. Put day on the y-axis.
   
 
+```r
+  Trips %>% 
+    ggplot(aes(y = (wday(sdate, label = TRUE)))) +
+      geom_bar()
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
   
   10. Facet your graph from exercise 8. by day of the week. Is there a pattern?
   
 
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density() +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+We can clearly see where people were commuting in the two peaks in the morning and the afternoon of weekdays. For weekends there is obviously a more even distribution because people have freer schedules.
   
 The variable `client` describes whether the renter is a regular user (level `Registered`) or has not joined the bike-rental organization (`Causal`). The next set of exercises investigate whether these two different categories of users show different rental behavior and how `client` interacts with the patterns you found in the previous exercises. 
 
   11. Change the graph from exercise 10 to set the `fill` aesthetic for `geom_density()` to the `client` variable. You should also set `alpha = .5` for transparency and `color=NA` to suppress the outline of the density function.
   
 
+```r
+Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
   12. Change the previous graph by adding the argument `position = position_stack()` to `geom_density()`. In your opinion, is this better or worse in terms of telling a story? What are the advantages/disadvantages of each?
   
 
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA, position = position_stack()) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+
+This is a lot worse. For one, the distribution is no longer normalized. When we separated into 2 density plots for registered and casual clients, each one was individually normalized for each client-base, so when we add them back up we get misrepresentation. Imagine if 90% of the trips were registered clients, and 10% were the casual clients. We would expect the stacked graphs to show the overall data for all trips, but if the 10% of casual clients all rode at one time, it would greatly skew the stacked graph, even if all the registered clients rode at some other time. It's the same reason the electoral college needs to go.
+We can fix the normalization issue relatively easily though, since R already has built in functionality
+
+
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday, after_stat(count))) +
+    geom_density(aes(fill = client), alpha = .5, color = NA, position = position_stack()) +
+    facet_wrap(vars(wday(sdate, label = TRUE)))
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+The problem now is that we have the total count instead of the distribution density, and I don't yet know how I can change the scale of counting by a factor of 1/n(). 
   
   13. In this graph, go back to using the regular density plot (without `position = position_stack()`). Add a new variable to the dataset called `weekend` which will be "weekend" if the day is Saturday or Sunday and  "weekday" otherwise (HINT: use the `ifelse()` function and the `wday()` function from `lubridate`). Then, update the graph from the previous problem by faceting on the new `weekend` variable. 
   
 
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate), weekend = ifelse(wday(sdate) != c(1,7), "Weekday", "Weekend")) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = client), alpha = .5, color = NA) +
+    facet_wrap(vars(weekend))
+```
+
+```
+## Warning in wday(sdate) != c(1, 7): longer object length is not a multiple of
+## shorter object length
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
   
   14. Change the graph from the previous problem to facet on `client` and fill with `weekday`. What information does this graph tell you that the previous didn't? Is one graph better than the other?
   
 
+```r
+  Trips %>% 
+    mutate(timeday = hour(sdate) + 1/60*minute(sdate)) %>% 
+    ggplot(aes(x = timeday)) +
+    geom_density(aes(fill = wday(sdate, label = TRUE)), alpha = .5, color = NA) +
+    facet_wrap(vars(client))
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+
+It further confirms the suspicion that the registered users have "typical" 9-5 jobs, since we can see that their behavior picks up during the day on the weekends, which the causal riders' doesn't. Other than just this purpose this graph is not very effective, because the many different colors heavily obfuscates any single day's information past the first few colors in the foreground.
   
 ### Spatial patterns
 
   15. Use the latitude and longitude variables in `Stations` to make a visualization of the total number of departures from each station in the `Trips` data. Use either color or size to show the variation in number of departures. We will improve this plot next week when we learn about maps!
   
 
+```r
+  usage_map <- left_join(Trips, select(Stations, name, lat, long),
+            by= c("sstation" = "name")) %>% 
+    group_by(sstation) %>% 
+    mutate(n = n()) 
+  usage_map %>% 
+    ggplot(aes(x = long, y = lat)) +
+      geom_point(aes(size = n, color = n))
+```
+
+```
+## Warning: Removed 11101 rows containing missing values (geom_point).
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
   
   16. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? (Again, we'll improve this next week when we learn about maps).
   
 
+```r
+    usage_map <- left_join(Trips, select(Stations, name, lat, long),
+            by= c("sstation" = "name")) %>% 
+    group_by(sstation) %>% 
+    mutate(n = n()) %>% 
+    group_by(sstation) %>% 
+    mutate(casual_prop = sum(client == "Casual")/n()) %>% 
+    group_by(sstation, client) %>% 
+    mutate(casual_count = n())
+  usage_map %>% 
+    ggplot(aes(x = long, y = lat)) +
+      geom_point(aes(size = casual_count, color = casual_prop))
+```
+
+```
+## Warning: Removed 11101 rows containing missing values (geom_point).
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
   
 **DID YOU REMEMBER TO GO BACK AND CHANGE THIS SET OF EXERCISES TO THE LARGER DATASET? IF NOT, DO THAT NOW.**
 
@@ -386,18 +521,110 @@ In this section, we'll use the data from 2022-02-01 Tidy Tuesday. If you didn't 
   17. The final product of this exercise will be a graph that has breed on the y-axis and the sum of the numeric ratings in the `breed_traits` dataset on the x-axis, with a dot for each rating. First, create a new dataset called `breed_traits_total` that has two variables -- `Breed` and `total_rating`. The `total_rating` variable is the sum of the numeric ratings in the `breed_traits` dataset (we'll use this dataset again in the next problem). Then, create the graph just described. Omit Breeds with a `total_rating` of 0 and order the Breeds from highest to lowest ranked. You may want to adjust the `fig.height` and `fig.width` arguments inside the code chunk options (eg. `{r, fig.height=8, fig.width=4}`) so you can see things more clearly - check this after you knit the file to assure it looks like what you expected.
 
 
+```r
+  total_rating_tbl <- breed_traits %>%
+    group_by(Breed) %>% 
+    select(-c( "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed) %>% 
+    summarize(total_rating = sum(Score))
+
+  breed_traits_total <- breed_traits %>% 
+    group_by(Breed) %>% 
+    select(-c("Coat Type", "Coat Length")) %>% 
+    left_join(total_rating_tbl, by = "Breed") %>% 
+    filter(total_rating != 0) %>% 
+    arrange(desc(total_rating))
+
+  breed_traits_total %>% 
+    ggplot(aes(y = fct_reorder(Breed, total_rating), x = total_rating)) +
+    geom_point()
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+When you said a dot for each rating, did you mean a dot for each total ie. one dot per breed? I'm just a little confused because while by my reading that's what you're asking, I would assume we wouldn't want to use points as much as bars for this type of plot.
 
   18. The final product of this exercise will be a graph with the top-20 dogs in total ratings (from previous problem) on the y-axis, year on the x-axis, and points colored by each breed's ranking for that year (from the `breed_rank_all` dataset). The points within each breed will be connected by a line, and the breeds should be arranged from the highest median rank to lowest median rank ("highest" is actually the smallest numer, eg. 1 = best). After you're finished, think of AT LEAST one thing you could you do to make this graph better. HINTS: 1. Start with the `breed_rank_all` dataset and pivot it so year is a variable. 2. Use the `separate()` function to get year alone, and there's an extra argument in that function that can make it numeric. 3. For both datasets used, you'll need to `str_squish()` Breed before joining. 
   
+
+```r
+  total_rating_tbl <- breed_traits %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    group_by(Breed_rect) %>% 
+    select(-c("Breed", "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed_rect,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed_rect) %>% 
+    summarize(total_rating = sum(Score)) %>%
+    slice_max(total_rating, n = 20) 
+
+  breed_rank_all %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    select(-c("Breed", "links", "Image")) %>% 
+    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year_rank", values_to = "rank") %>% 
+    separate(year_rank, into = c("year")) %>% 
+    right_join(total_rating_tbl, by = "Breed_rect") %>%
+    group_by(Breed_rect) %>% 
+    mutate(med_rank = median(rank)) %>% 
+    arrange(med_rank) %>% 
+  ggplot(aes(y = fct_reorder(Breed_rect, med_rank, .desc = TRUE), x = year)) +
+    geom_point(aes(color = rank), size = 5) +
+    geom_hline(yintercept = c("Miniature American Shepherd", "Retrievers (Labrador)", "German Shepherd Dogs", "Poodles", "Yorkshire Terriers", "Pointers (German Shorthaired)", "Miniature Schnauzers", "Shetland Sheepdogs", "Bernese Mountain Dogs", "Vizslas", "Weimaraners", "Portuguese Water Dogs", "Papillons", "Samoyeds", "Wirehaired Pointing Griffons", "Setters (Irish)", "Keeshonden", "Retrievers (Flat-Coated)", "Leonbergers", "Treeing Walker Coonhounds")) +
+    scale_color_continuous()
+```
+
+```
+## Warning: Expected 1 pieces. Additional pieces discarded in 1560 rows [1, 2, 3,
+## 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+
+This graph has the order messed up because of the NA values for the Miniature American Shepherd. I think this graph would be better if it was faceted along the breed, and the ratings were put on the y axis, because it's hard to get any of the fine trends with the low resolution of the color scale.
+
 
   
   19. Create your own! Requirements: use a `join` or `pivot` function (or both, if you'd like), a `str_XXX()` function, and a `fct_XXX()` function to create a graph using any of the dog datasets. One suggestion is to try to improve the graph you created for the Tidy Tuesday assignment. If you want an extra challenge, find a way to use the dog images in the `breed_rank_all` file - check out the `ggimage` library and [this resource](https://wilkelab.org/ggtext/) for putting images as labels.
   
 
+```r
+  total_rating_tbl <- breed_traits %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    group_by(Breed_rect) %>% 
+    select(-c("Breed", "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed_rect,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed_rect) %>% 
+    summarize(total_rating = sum(Score)) %>%
+    slice_max(total_rating, n = 20) 
+
+  breed_rank_all %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    select(-c("Breed", "links", "Image")) %>% 
+    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year_rank", values_to = "rank") %>% 
+    separate(year_rank, into = c("year")) %>% 
+    right_join(total_rating_tbl, by = "Breed_rect") %>% 
+    select(Breed_rect, year, rank) %>% 
+    group_by(Breed_rect) %>% 
+    mutate(deviation = sd(rank)) %>% 
+    ggplot(aes(y = fct_reorder(Breed_rect, str_length(Breed_rect)), x = deviation)) +
+    geom_col()
+```
+
+```
+## Warning: Expected 1 pieces. Additional pieces discarded in 1560 rows [1, 2, 3,
+## 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].
+```
+
+```
+## Warning: Removed 8 rows containing missing values (position_stack).
+```
+
+![](03_exercises_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
   
 ## GitHub link
 
-  20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub.
+  20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub. 
+
+[GitHub](https://github.com/COEPLeader/Exercise-3/blob/main/03_exercises.md)
 
 ## Challenge problem! 
 

@@ -341,31 +341,54 @@ When you said a dot for each rating, did you mean a dot for each total ie. one d
   breed_rank_all %>%
     mutate(Breed_rect = str_squish(Breed)) %>% 
     select(-c("Breed", "links", "Image")) %>% 
-    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year", values_to = "rank") %>% 
+    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year_rank", values_to = "rank") %>% 
+    separate(year_rank, into = c("year")) %>% 
     right_join(total_rating_tbl, by = "Breed_rect") %>%
     group_by(Breed_rect) %>% 
     mutate(med_rank = median(rank)) %>% 
     arrange(med_rank) %>% 
   ggplot(aes(y = fct_reorder(Breed_rect, med_rank, .desc = TRUE), x = year)) +
-    geom_point(aes(color = rank)) +
-    geom_line(aes(y = Breed_rect))
+    geom_point(aes(color = rank), size = 5) +
+    geom_hline(yintercept = c("Miniature American Shepherd", "Retrievers (Labrador)", "German Shepherd Dogs", "Poodles", "Yorkshire Terriers", "Pointers (German Shorthaired)", "Miniature Schnauzers", "Shetland Sheepdogs", "Bernese Mountain Dogs", "Vizslas", "Weimaraners", "Portuguese Water Dogs", "Papillons", "Samoyeds", "Wirehaired Pointing Griffons", "Setters (Irish)", "Keeshonden", "Retrievers (Flat-Coated)", "Leonbergers", "Treeing Walker Coonhounds")) +
+    scale_color_continuous()
 ```
 
-This graph has the order messed up because of the NA values for the Miniature American Shepherd. I think another way to make this graph more useful would be to 
+This graph has the order messed up because of the NA values for the Miniature American Shepherd. I think this graph would be better if it was faceted along the breed, and the ratings were put on the y axis, because it's hard to get any of the fine trends with the low resolution of the color scale.
 
-```{r}
-  view(left_join(breed_traits, breed_rank_all, by = str_squish(Breed)))
-```
+
   
   19. Create your own! Requirements: use a `join` or `pivot` function (or both, if you'd like), a `str_XXX()` function, and a `fct_XXX()` function to create a graph using any of the dog datasets. One suggestion is to try to improve the graph you created for the Tidy Tuesday assignment. If you want an extra challenge, find a way to use the dog images in the `breed_rank_all` file - check out the `ggimage` library and [this resource](https://wilkelab.org/ggtext/) for putting images as labels.
   
 ```{r}
+  total_rating_tbl <- breed_traits %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    group_by(Breed_rect) %>% 
+    select(-c("Breed", "Coat Type", "Coat Length")) %>% 
+    pivot_longer(-Breed_rect,names_to = "Trait", values_to = "Score") %>% 
+    group_by(Breed_rect) %>% 
+    summarize(total_rating = sum(Score)) %>%
+    slice_max(total_rating, n = 20) 
 
+  breed_rank_all %>%
+    mutate(Breed_rect = str_squish(Breed)) %>% 
+    select(-c("Breed", "links", "Image")) %>% 
+    pivot_longer(c("2013 Rank" : "2020 Rank"), names_to = "year_rank", values_to = "rank") %>% 
+    separate(year_rank, into = c("year")) %>% 
+    right_join(total_rating_tbl, by = "Breed_rect") %>% 
+    select(Breed_rect, year, rank) %>% 
+    group_by(Breed_rect) %>% 
+    mutate(deviation = sd(rank)) %>% 
+    ggplot(aes(y = fct_reorder(Breed_rect, str_length(Breed_rect)), x = deviation)) +
+    geom_col()
+    
+    
 ```
   
 ## GitHub link
 
-  20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub.
+  20. Below, provide a link to your GitHub page with this set of Weekly Exercises. Specifically, if the name of the file is 03_exercises.Rmd, provide a link to the 03_exercises.md file, which is the one that will be most readable on GitHub. 
+
+[GitHub](https://github.com/COEPLeader/Exercise-3/blob/main/03_exercises.md)
 
 ## Challenge problem! 
 
